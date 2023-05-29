@@ -7,12 +7,11 @@ import "./Todocard.css";
 
 function Todocard(props) {
   const [isUpdating, setUpdating] = useState(false);
-  const [text, setText] = useState(props.ele.text);
+  const [text, setText] = useState("");
   const textareaRef = useRef(null);
-
+  // console.log("here", props);
+  // console.log(props.listt);
   function deleteval(x) {
-    //remove from list
-    // console.log("del fun clicked");
     const newlist = [...props.listt].filter((todo) => todo.id !== x);
     props.setlists(newlist);
   }
@@ -22,23 +21,17 @@ function Todocard(props) {
       setText(props.ele.text);
       return;
     }
+//     console.log(id, text);
 
-    const newlist = [...props.listt].filter((todo) => todo.id !== id);
-    newlist.push({
-      id: id,
-      text: text.trim()
-    });
-    // const newlist = props.listt;
-    // for (let i = 0; i < newlist.length; i++) {
-    //   console.log(newlist[i].text, newlist[i].id);
-    //   if (newlist[i].id === id) {
-    //     newlist[i].text = textareaRef.current.value;
-    //   }
-    // }
-
-    props.setlists(newlist);
+    const index = props.listt.findIndex((obj) => obj.id === id);
+    if (index !== -1) {
+      props.listt[index].text = text;
+      // props.setlists(props.listt);
+    }
     setUpdating(false);
+
   }
+
   return (
     <div className="totalwrap">
       <div className="showtodo" id={props.ele.id}>
@@ -69,6 +62,7 @@ function Todocard(props) {
             <TiEdit
               className="delete-icon "
               onClick={() => {
+                setText(props.ele.text);
                 setUpdating(true);
               }}
             />
